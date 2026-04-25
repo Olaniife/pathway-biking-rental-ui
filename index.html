@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pathway Biking Rental Transaction Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    header {
+      background: #1f4e79;
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      font-size: 15px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 22px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #1f4e79;
+      font-size: 22px;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 6px;
+      background: #1f4e79;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #163a5a;
+    }
+
+    .secondary {
+      background: #555;
+    }
+
+    .danger {
+      background: #b91c1c;
+    }
+
+    .success {
+      background: #e8f5e9;
+      border-left: 5px solid #2e7d32;
+      padding: 12px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .error {
+      background: #fdecea;
+      border-left: 5px solid #c62828;
+      padding: 12px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #1f4e79;
+      color: white;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Pathway Biking Rental Transaction Form</h1>
+    <p>Optional User Interface Prototype for IS 443/543 Group Project</p>
+  </header>
+
+  <main>
+    <div class="grid">
+      <section class="card">
+        <h2>Checkout Bike</h2>
+        <form id="checkoutForm">
+          <label for="memberId">Member ID</label>
+          <select id="memberId" required></select>
+
+          <label for="bikeId">Bike ID</label>
+          <select id="bikeId" required></select>
+
+          <label for="rentalLocation">Rental Location</label>
+          <select id="rentalLocation" required></select>
+
+          <label for="rentalDate">Rental Date</label>
+          <input type="date" id="rentalDate" required />
+
+          <label for="expectedReturnDate">Expected Return Date</label>
+          <input type="date" id="expectedReturnDate" required />
+
+          <button type="submit">Submit Rental</button>
+        </form>
+        <div id="checkoutSuccess" class="success"></div>
+        <div id="checkoutError" class="error"></div>
+      </section>
+
+      <section class="card">
+        <h2>Return Bike</h2>
+        <form id="returnForm">
+          <label for="returnRentalId">Rental ID</label>
+          <select id="returnRentalId" required></select>
+
+          <label for="returnLocation">Return Location</label>
+          <select id="returnLocation" required></select>
+
+          <label for="actualReturnDate">Actual Return Date</label>
+          <input type="date" id="actualReturnDate" required />
+
+          <button type="submit">Process Return</button>
+        </form>
+        <div id="returnSuccess" class="success"></div>
+        <div id="returnError" class="error"></div>
+      </section>
+
+      <section class="card full-width">
+        <h2>Rental Transactions</h2>
+        <p class="note">This front-end prototype simulates the same business rules enforced by the Oracle triggers.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Rental ID</th>
+              <th>Member</th>
+              <th>Bike</th>
+              <th>Rental Date</th>
+              <th>Expected Return</th>
+              <th>Actual Return</th>
+              <th>Daily Fee</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="rentalTable"></tbody>
+        </table>
+      </section>
+
+      <section class="card full-width">
+        <h2>Members and Bikes</h2>
+        <div class="grid">
+          <div>
+            <h3>Members</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody id="memberTable"></tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Bikes</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody id="bikeTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // ---------------------------------------------------------
+    // Sample data matching the Oracle project script
+    // ---------------------------------------------------------
+    const locations = [
+      { id: 1, city: "Minneapolis" },
+      { id: 2, city: "St Paul" },
+      { id: 3, city: "Madison" },
+      { id: 4, city: "Sioux Falls" },
+      { id: 5, city: "Detroit" }
+    ];
+
+    const members = [
+      { id: 1001, name: "John Carter", balance: 0 },
+      { id: 1002, name: "Mary Lopez", balance: 50 },
+      { id: 1003, name: "David Kim", balance: 100 },
+      { id: 1004, name: "Sarah Green", balance: 0 },
+      { id: 1005, name: "James Brown", balance: 450 }
+    ];
+
+    const bikes = [
+      { id: 2001, category: "Road Bike", fee: 80, status: "Available", location: 1 },
+      { id: 2002, category: "Mountain Bike", fee: 95, status: "Available", location: 1 },
+      { id: 2003, category: "Touring Bike", fee: 95, status: "Available", location: 2 },
+      { id: 2004, category: "Folding Bike", fee: 100, status: "Available", location: 3 },
+      { id: 2005, category: "e-Bike – Road", fee: 100, status: "Available", location: 4 }
+    ];
+
+    const rentals = [];
+    let nextRentalId = 9001;
+
+    const memberSelect = document.getElementById("memberId");
+    const bikeSelect = document.getElementById("bikeId");
+    const rentalLocationSelect = document.getElementById("rentalLocation");
+    const returnLocationSelect = document.getElementById("returnLocation");
+    const returnRentalSelect = document.getElementById("returnRentalId");
+
+    function populateSelects() {
+      memberSelect.innerHTML = members.map(m => `<option value="${m.id}">${m.id} - ${m.name}</option>`).join("");
+      bikeSelect.innerHTML = bikes
+        .filter(b => b.status === "Available")
+        .map(b => `<option value="${b.id}">${b.id} - ${b.category} ($${b.fee}/day)</option>`)
+        .join("");
+
+      rentalLocationSelect.innerHTML = locations.map(l => `<option value="${l.id}">${l.id} - ${l.city}</option>`).join("");
+      returnLocationSelect.innerHTML = rentalLocationSelect.innerHTML;
+
+      returnRentalSelect.innerHTML = rentals
+        .filter(r => !r.actualReturnDate)
+        .map(r => `<option value="${r.id}">${r.id} - Bike ${r.bikeId}</option>`)
+        .join("");
+    }
+
+    function showMessage(elementId, message) {
+      const el = document.getElementById(elementId);
+      el.textContent = message;
+      el.style.display = "block";
+      setTimeout(() => el.style.display = "none", 6000);
+    }
+
+    function hideMessages() {
+      ["checkoutSuccess", "checkoutError", "returnSuccess", "returnError"].forEach(id => {
+        document.getElementById(id).style.display = "none";
+      });
+    }
+
+    function activeRentalCount(memberId) {
+      return rentals.filter(r => r.memberId === memberId && !r.actualReturnDate).length;
+    }
+
+    function daysBetween(start, end) {
+      const d1 = new Date(start);
+      const d2 = new Date(end);
+      return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
+
+    document.getElementById("checkoutForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      hideMessages();
+
+      const memberId = Number(memberSelect.value);
+      const bikeId = Number(bikeSelect.value);
+      const rentalLocation = Number(rentalLocationSelect.value);
+      const rentalDate = document.getElementById("rentalDate").value;
+      const expectedReturnDate = document.getElementById("expectedReturnDate").value;
+
+      const member = members.find(m => m.id === memberId);
+      const bike = bikes.find(b => b.id === bikeId);
+
+      // Business Rule 3: block if balance exceeds $500
+      if (member.balance > 500) {
+        showMessage("checkoutError", "Rental blocked: member unpaid balance exceeds $500.");
+        return;
+      }
+
+      // Business Rule 1: no more than 3 active rentals
+      if (activeRentalCount(memberId) >= 3) {
+        showMessage("checkoutError", "Rental blocked: member already has 3 active rentals.");
+        return;
+      }
+
+      if (!bike || bike.status !== "Available") {
+        showMessage("checkoutError", "Rental blocked: selected bike is not available.");
+        return;
+      }
+
+      if (new Date(expectedReturnDate) < new Date(rentalDate)) {
+        showMessage("checkoutError", "Expected return date cannot be before rental date.");
+        return;
+      }
+
+      rentals.push({
+        id: nextRentalId++,
+        memberId,
+        bikeId,
+        rentalLocation,
+        returnLocation: null,
+        rentalDate,
+        expectedReturnDate,
+        actualReturnDate: null,
+        dailyFee: bike.fee
+      });
+
+      // Business Rule 1: update bike status to Out
+      bike.status = "Out";
+      bike.location = rentalLocation;
+
+      showMessage("checkoutSuccess", "Rental processed successfully. Bike status changed to Out.");
+      renderAll();
+    });
+
+    document.getElementById("returnForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      hideMessages();
+
+      const rentalId = Number(returnRentalSelect.value);
+      const returnLocation = Number(returnLocationSelect.value);
+      const actualReturnDate = document.getElementById("actualReturnDate").value;
+
+      const rental = rentals.find(r => r.id === rentalId);
+      if (!rental) {
+        showMessage("returnError", "No active rental selected.");
+        return;
+      }
+
+      const bike = bikes.find(b => b.id === rental.bikeId);
+      const member = members.find(m => m.id === rental.memberId);
+
+      rental.actualReturnDate = actualReturnDate;
+      rental.returnLocation = returnLocation;
+
+      // Business Rule 2: late fee = $20 per day late
+      const lateDays = daysBetween(rental.expectedReturnDate, actualReturnDate);
+      let lateFee = 0;
+      if (lateDays > 0) {
+        lateFee = lateDays * 20;
+        member.balance += lateFee;
+      }
+
+      // Business Rule 2: update bike status and location
+      bike.status = "Available";
+      bike.location = returnLocation;
+
+      showMessage("returnSuccess", `Return processed. Late fee added: $${lateFee}. Bike status changed to Available.`);
+      renderAll();
+    });
+
+    function renderRentalTable() {
+      const tbody = document.getElementById("rentalTable");
+      tbody.innerHTML = rentals.map(r => {
+        const member = members.find(m => m.id === r.memberId);
+        const status = r.actualReturnDate ? "Returned" : "Active";
+        return `
+          <tr>
+            <td>${r.id}</td>
+            <td>${member.name}</td>
+            <td>${r.bikeId}</td>
+            <td>${r.rentalDate}</td>
+            <td>${r.expectedReturnDate}</td>
+            <td>${r.actualReturnDate || "-"}</td>
+            <td>$${r.dailyFee}</td>
+            <td>${status}</td>
+          </tr>`;
+      }).join("");
+    }
+
+    function renderMemberTable() {
+      document.getElementById("memberTable").innerHTML = members.map(m => `
+        <tr>
+          <td>${m.id}</td>
+          <td>${m.name}</td>
+          <td>$${m.balance}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderBikeTable() {
+      document.getElementById("bikeTable").innerHTML = bikes.map(b => `
+        <tr>
+          <td>${b.id}</td>
+          <td>${b.category}</td>
+          <td>${b.status}</td>
+          <td>${b.location}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderAll() {
+      populateSelects();
+      renderRentalTable();
+      renderMemberTable();
+      renderBikeTable();
+    }
+
+    // Default dates for convenience
+    document.getElementById("rentalDate").value = "2026-04-24";
+    document.getElementById("expectedReturnDate").value = "2026-04-26";
+    document.getElementById("actualReturnDate").value = "2026-04-27";
+
+    renderAll();
+  </script>
+</body>
+</html>
