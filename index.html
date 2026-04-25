@@ -3,53 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rental Transaction Processing User Interface</title>
+  <title>Pathway Biking Database System</title>
   <style>
-    :root {
-      --primary: #4f7db8;
-      --primary-dark: #111827;
-      --accent: #e3c7ad;
-      --light: #f4f6f8;
-      --text: #222;
-    }
-
     * {
       box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Calibri, Arial, sans-serif;
     }
 
     body {
       margin: 0;
-      background: var(--light);
-      color: var(--text);
+      background: #ffffff;
+      color: #000;
     }
 
     header {
-      background: var(--primary-dark);
+      background: #4472C4;
       color: white;
-      padding: 18px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    header img {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
+      padding: 22px;
+      text-align: center;
     }
 
     header h1 {
       margin: 0;
-      font-size: 28px;
-      line-height: 1.1;
+      font-size: 30px;
+      font-weight: 700;
     }
 
     header p {
       margin: 6px 0 0;
-      font-size: 15px;
-      color: #e5e7eb;
+      font-size: 16px;
     }
 
     main {
@@ -65,82 +47,96 @@
     }
 
     .card {
-      background: white;
-      border-radius: 10px;
+      background: #f2f2f2;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
       padding: 22px;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     h2 {
       margin-top: 0;
-      color: var(--primary);
-      border-bottom: 2px solid #e5e7eb;
-      padding-bottom: 10px;
+      color: #4472C4;
+      border-bottom: 2px solid #d9d9d9;
+      padding-bottom: 8px;
+      font-size: 24px;
+    }
+
+    h3 {
+      color: #4472C4;
+      margin-bottom: 8px;
     }
 
     label {
       display: block;
-      margin-top: 14px;
+      margin-top: 12px;
       font-weight: bold;
       font-size: 14px;
     }
 
     input, select {
       width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
+      padding: 9px;
+      margin-top: 5px;
+      border: 1px solid #bfbfbf;
+      border-radius: 4px;
       background: white;
+      font-size: 14px;
     }
 
     button {
-      margin-top: 20px;
-      padding: 12px 18px;
+      margin-top: 16px;
+      padding: 10px 16px;
       border: none;
-      border-radius: 6px;
-      background: var(--primary);
+      border-radius: 4px;
+      background: #4472C4;
       color: white;
       cursor: pointer;
       font-size: 15px;
     }
 
     button:hover {
-      background: #3b5f91;
+      background: #2F5597;
     }
 
     .success {
-      background: #e8f5e9;
-      border-left: 5px solid #2e7d32;
+      background: #E2F0D9;
+      border-left: 5px solid #70AD47;
       padding: 12px;
       margin-top: 14px;
       display: none;
     }
 
     .error {
-      background: #fdecea;
-      border-left: 5px solid #c62828;
+      background: #FBE5D6;
+      border-left: 5px solid #C00000;
       padding: 12px;
       margin-top: 14px;
       display: none;
     }
 
+    .note {
+      font-size: 13px;
+      color: #333;
+      margin-top: 8px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 16px;
+      margin-top: 15px;
       font-size: 14px;
+      background: white;
     }
 
     th, td {
-      border: 1px solid #ddd;
+      border: 1px solid #d9d9d9;
       padding: 8px;
       text-align: left;
     }
 
     th {
-      background: var(--primary);
+      background: #4472C4;
       color: white;
     }
 
@@ -148,19 +144,7 @@
       grid-column: 1 / -1;
     }
 
-    .note {
-      font-size: 13px;
-      color: #555;
-      margin-top: 8px;
-    }
-
     @media (max-width: 800px) {
-      header {
-        justify-content: flex-start;
-      }
-      header h1 {
-        font-size: 22px;
-      }
       .grid {
         grid-template-columns: 1fr;
       }
@@ -169,11 +153,8 @@
 </head>
 <body>
   <header>
-    <img src="./logo.png" alt="Pathway Biking Logo" />
-    <div>
-      <h1>Rental Transaction Processing User Interface</h1>
-      <p>Pathway Biking System</p>
-    </div>
+    <h1>Pathway Biking Database System</h1>
+    <p>Rental Transaction Processing User Interface</p>
   </header>
 
   <main>
